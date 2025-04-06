@@ -10,17 +10,6 @@ app = Flask(__name__)
 path = 'data/'
 Person.read(path)
 prev_option = ""
-
-@app.route("/", methods=["post","get"])
-def index():
-    global prev_option
-    butshow = "enabled"
-    butedit = "disabled"
-    option = request.args.get("option")
-    if option == "edit":
-        butshow = "disabled"
-        butedit = "enabled"
-    elif option == "delete":
         obj = Person.current()
         Person.remove(obj.code)
         if not Person.previous():
@@ -36,6 +25,17 @@ def index():
         request.form["dob"] + ';' + request.form["salary"]
         Person.from_string(strobj)
         Person.write(path)
+
+@app.route("/", methods=["post","get"])
+def index():
+    global prev_option
+    butshow = "enabled"
+    butedit = "disabled"
+    option = request.args.get("option")
+    if option == "edit":
+        butshow = "disabled"
+        butedit = "enabled"
+    elif option == "delete":
         Person.last()
     elif prev_option == 'edit' and option == 'save':
         obj = Person.current()
@@ -53,7 +53,7 @@ def index():
     elif option == "last":
         Person.last()
     elif option == 'exit':
-        return "<h1>Thank you for using Person app</h1>"
+        return "<h1>Thank you for using Person app.</h1>"
     prev_option = option
     obj = Person.current()
     if option == 'insert':
